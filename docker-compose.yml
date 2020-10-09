@@ -1,0 +1,32 @@
+services:
+  mobi2buy-api-tiny-url:
+    image: caputomarcos/mobi2buy-api:latest
+    ports:
+      - 8001:8080
+    environment:
+      MONGO_ADDR: mongo-db
+    links:
+      - mongo-db
+    networks:
+      - mongo-compose-network
+
+  mongo-db:
+    image: mongo:latest
+    container_name: mongo-server
+    # environment:
+    #   MONGO_INITDB_DATABASE: demodb  
+    #   MONGO_INITDB_ROOT_USERNAME: root
+    #   MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data_container:/data/db
+    networks:
+      - mongo-compose-network
+
+networks: 
+    mongo-compose-network:
+      driver: bridge
+
+volumes:
+  mongodb_data_container:
