@@ -4,6 +4,12 @@
 
 ```bash
 docker-compose up --remove-orphans
+
+# or build
+
+docker build -t mobi2buy/base -f Dockerfile_base .
+docker build -t mobi2buy/api .
+
 ```
 
 ## Usage
