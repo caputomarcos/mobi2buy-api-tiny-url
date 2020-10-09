@@ -6,7 +6,47 @@
 docker-compose up --remove-orphans
 ```
 
-## Build Locally
+## Usage
+
+### Set tiny url
+
+```bash
+ $ curl -d '{"url": "http://google.com", "tiny_url": "cap"}' -H "Content-Type: application/json" -X POST http://localhost:8001
+
+ {"$oid":"5f80b0ff3239360100095051"}
+```
+
+### Redirect
+
+```bash
+$ curl  -I http://localhost:8001/cap
+
+ HTTP/1.1 308 Permanent Redirect
+Location: http://google.com
+Server: Rocket
+Content-Length: 0
+Date: Fri, 09 Oct 2020 18:49:59 GMT
+```
+
+### Auto create tiny url
+
+```bash
+$ curl -d '{"url": "http://google.com"}' -H "Content-Type: application/json" -X POST http://localhost:8001
+
+{"$oid":"5f80b0ff3239360100095051"}
+```
+
+### Delete older than 7 days
+
+```bash
+curl -H "Content-Type: application/json" -X DELETE http://localhost:8001/old
+
+true
+```
+
+## Dev
+
+### Build
 
 ```bash
 echo -e "MONGO_ADDR=localhost
@@ -22,35 +62,16 @@ rustup default nightly
 cargo run &
 ```
 
-## Usage
-
-### Set tiny url
-
-```bash
- curl -d '{"url": "http://google.com", "tiny_url": "cap"}' -H "Content-Type: application/json" -X POST http://localhost:8001
-```
-
-### Auto create tiny url
-
-```bash
-curl -d '{"url": "http://google.com"}' -H "Content-Type: application/json" -X POST http://localhost:8001
-```
-
-### Delete All - dev
-
-```bash
-curl -H "Content-Type: application/json" -X DELETE http://localhost:8001/old
-```
-
-### Delete All - dev
-
-```bash
-curl -H "Content-Type: application/json" -X DELETE http://localhost:8001/
-```
-
-
-## Tests
+### Tests
 
 ```rust
 cargo test -- --test-threads=1
+```
+
+#### Delete All - dev
+
+```bash
+curl -H "Content-Type: application/json" -X DELETE http://localhost:8001/
+
+true
 ```
